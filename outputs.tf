@@ -7,11 +7,13 @@ output "argocd_namespace" {
 output "argocd_host" {
   description = "The ingress host for the Argo CD instance"
   value = module.gitops.ingress_host
+  sensitive = true
 }
 
 output "argocd_url" {
   description = "The ingress url for the Argo CD instance"
   value = module.gitops.ingress_url
+  sensitive = true
 }
 
 output "argocd_username" {
