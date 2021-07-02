@@ -4,6 +4,11 @@ output "argocd_namespace" {
   value       = module.gitops.namespace
 }
 
+output "argocd_service_account" {
+  description = "The namespace where the ArgoCD instance has been provisioned"
+  value       = module.gitops.service_account
+}
+
 output "argocd_host" {
   description = "The ingress host for the Argo CD instance"
   value = module.gitops.ingress_host
