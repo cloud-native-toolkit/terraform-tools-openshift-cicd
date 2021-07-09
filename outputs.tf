@@ -31,3 +31,13 @@ output "argocd_password" {
   value = module.gitops.password
   sensitive = true
 }
+
+output "sealed_secrets_public_key" {
+  value = module.sealed_secrets.private_key
+  sensitive = true
+}
+
+output "sealed_secrets_private_key" {
+  value = module.sealed_secrets.private_key
+  sensitive = true
+}
