@@ -55,3 +55,16 @@ versions:
         id: namespace
         output: name
         discriminator: gitops
+    - name: sealed_secret_namespace
+      moduleRef:
+        id: namespace
+        output: name
+        discriminator: sealed-secrets
+    - name: sealed_secret_public_key
+      scope: global
+    - name: sealed_secret_private_key
+      scope: global
+    - name: sealed_secret_public_key_file
+      scope: global
+    - name: sealed_secret_private_key_file
+      scope: global
