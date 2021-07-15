@@ -11,7 +11,7 @@ module "gitops" {
 }
 
 module "pipelines" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.3.1"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.3.2"
 
   cluster_config_file_path = var.cluster_config_file
   cluster_type             = var.cluster_type
@@ -21,7 +21,7 @@ module "pipelines" {
 }
 
 module "sealed_secrets" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.0.5"
+  source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.0.6"
 
   cluster_config_file = var.cluster_config_file
   private_key = var.sealed_secret_private_key
