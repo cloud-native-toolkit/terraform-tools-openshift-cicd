@@ -33,11 +33,14 @@ output "argocd_password" {
 }
 
 output "sealed_secrets_public_key" {
-  value = module.sealed_secrets.private_key
-  sensitive = true
+  value = module.sealed_secrets.public_key
 }
 
 output "sealed_secrets_private_key" {
   value = module.sealed_secrets.private_key
   sensitive = true
+}
+
+output "sealed_secrets_cert" {
+  value = module.sealed_secrets.cert
 }
