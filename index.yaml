@@ -103,6 +103,121 @@ versions:
         description: The file containin the private key that will be used to encrypt the sealed secrets. If not provided a new private key will be generated
         default: ""
         optional: true
+    version: v1.5.4
+    outputs:
+      - name: argocd_namespace
+        description: The namespace where the ArgoCD instance has been provisioned
+      - name: argocd_service_account
+        description: The namespace where the ArgoCD instance has been provisioned
+      - name: argocd_host
+        description: The ingress host for the Argo CD instance
+      - name: argocd_url
+        description: The ingress url for the Argo CD instance
+      - name: argocd_username
+        description: The username of the default ArgoCD admin user
+      - name: argocd_password
+        description: The password of the default ArgoCD admin user
+      - name: sealed_secrets_public_key
+        description: output "sealed_secrets_public_key" {   value = module.sealed_secrets.public_key }
+      - name: sealed_secrets_private_key
+        description: output "sealed_secrets_private_key" {   value = module.sealed_secrets.private_key   sensitive = true }
+      - name: sealed_secrets_cert
+        description: output "sealed_secrets_cert" {   value = module.sealed_secrets.cert }
+  - platforms:
+      - kubernetes
+      - ocp4
+    dependencies:
+      - id: cluster
+        refs:
+          - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
+            version: ">= 1.7.0"
+          - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
+            version: ">= 1.0.0"
+          - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
+            version: ">= 2.0.0"
+          - source: github.com/ibm-garage-cloud/terraform-ocp-login
+            version: ">= 1.0.0"
+      - id: olm
+        refs:
+          - source: github.com/ibm-garage-cloud/terraform-k8s-olm
+            version: ">= 1.2.2"
+      - id: namespace
+        refs:
+          - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
+            version: ">= 2.1.0"
+    variables:
+      - name: cluster_type
+        moduleRef:
+          id: cluster
+          output: platform.type_code
+        type: string
+        description: The type of cluster (openshift or kubernetes)
+      - name: ingress_subdomain
+        moduleRef:
+          id: cluster
+          output: platform.ingress
+        type: string
+        description: The subdomain for ingresses in the cluster
+        default: ""
+        optional: true
+      - name: cluster_config_file
+        moduleRef:
+          id: cluster
+          output: config_file_path
+        type: string
+        description: Cluster config file for Kubernetes cluster.
+      - name: olm_namespace
+        moduleRef:
+          id: olm
+          output: olm_namespace
+        type: string
+        description: Namespace where olm is installed
+      - name: operator_namespace
+        moduleRef:
+          id: olm
+          output: target_namespace
+        type: string
+        description: Namespace where operators will be installed
+      - name: app_namespace
+        moduleRef:
+          id: namespace
+          output: name
+          discriminator: gitops
+        type: string
+        description: Namespace where operators will be installed
+      - name: sealed_secret_namespace
+        moduleRef:
+          id: namespace
+          output: name
+          discriminator: sealed-secrets
+        type: string
+        description: The namespace where the sealed secret will be deployed
+        default: sealed-secrets
+        optional: true
+      - name: sealed_secret_public_key
+        scope: global
+        type: string
+        description: The public key that will be used to encrypt sealed secrets. If not provided, a new one will be generated
+        default: ""
+        optional: true
+      - name: sealed_secret_private_key
+        scope: global
+        type: string
+        description: The private key that will be used to decrypt sealed secrets. If not provided, a new one will be generated
+        default: ""
+        optional: true
+      - name: sealed_secret_public_key_file
+        scope: global
+        type: string
+        description: The file containing the public key that will be used to encrypt the sealed secrets. If not provided a new public key will be generated
+        default: ""
+        optional: true
+      - name: sealed_secret_private_key_file
+        scope: global
+        type: string
+        description: The file containin the private key that will be used to encrypt the sealed secrets. If not provided a new private key will be generated
+        default: ""
+        optional: true
     version: v1.5.3
     outputs:
       - name: argocd_namespace
