@@ -29,6 +29,10 @@ versions:
       refs:
         - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
           version: ">= 2.1.0"
+    - id: cert
+      refs:
+        - source: github.com/cloud-native-toolkit/terraform-util-sealed-secret-cert
+          version: ">= 0.0.0"
   variables:
     - name: cluster_type
       moduleRef:
@@ -60,11 +64,11 @@ versions:
         id: namespace
         output: name
         discriminator: sealed-secrets
-    - name: sealed_secret_public_key
-      scope: global
+    - name: sealed_secret_cert
+      moduleRef:
+        id: cert
+        output: cert
     - name: sealed_secret_private_key
-      scope: global
-    - name: sealed_secret_public_key_file
-      scope: global
-    - name: sealed_secret_private_key_file
-      scope: global
+      moduleRef:
+        id: cert
+        output: private_key
