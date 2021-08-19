@@ -1,6 +1,6 @@
 
 module "gitops" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v2.17.2"
+  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v2.17.3"
 
   cluster_type        = var.cluster_type
   ingress_subdomain   = var.ingress_subdomain
