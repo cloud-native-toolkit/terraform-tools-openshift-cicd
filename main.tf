@@ -1,9 +1,7 @@
 
 module "gitops" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v2.17.6"
+  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v2.17.8"
 
-  cluster_type        = var.cluster_type
-  ingress_subdomain   = var.ingress_subdomain
   cluster_config_file = var.cluster_config_file
   olm_namespace       = var.olm_namespace
   operator_namespace  = var.operator_namespace
@@ -11,7 +9,7 @@ module "gitops" {
 }
 
 module "pipelines" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.3.4"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.3.5"
 
   cluster_config_file_path = var.cluster_config_file
   cluster_type             = var.cluster_type
