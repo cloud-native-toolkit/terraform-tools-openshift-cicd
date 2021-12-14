@@ -9,7 +9,7 @@ module "gitops" {
 }
 
 module "pipelines" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.3.4"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.3.5"
 
   cluster_config_file_path = var.cluster_config_file
   cluster_type             = var.cluster_type
