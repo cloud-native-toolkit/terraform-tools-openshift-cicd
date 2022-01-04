@@ -19,7 +19,7 @@ module "pipelines" {
 }
 
 module "sealed_secrets" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.1.2"
+  source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.1.3"
 
   cluster_config_file = var.cluster_config_file
   private_key = var.sealed_secret_private_key
