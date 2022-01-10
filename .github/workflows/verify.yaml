@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         platform:
-          - ocp4_latest
+          - ocp4_latest_gitops
 #          - ocp46
 #          - ocp45
       #      max-parallel: 1
@@ -41,14 +41,14 @@ jobs:
           TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
           IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
 
-      - name: Verify destroy on ${{ matrix.platform }}
-        uses: ibm-garage-cloud/action-module-verify-destroy@main
-        if: ${{ always() }}
-        with:
-          clusterId: ${{ matrix.platform }}
-        env:
-          TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
-          IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
+#      - name: Verify destroy on ${{ matrix.platform }}
+#        uses: ibm-garage-cloud/action-module-verify-destroy@main
+#        if: ${{ always() }}
+#        with:
+#          clusterId: ${{ matrix.platform }}
+#        env:
+#          TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
+#          IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
 
 
   release:
