@@ -53,10 +53,6 @@ versions:
         output: name
         discriminator: gitops
     - name: sealed_secret_namespace
-      moduleRef:
-        id: namespace
-        output: name
-        discriminator: sealed-secrets
     - name: sealed_secret_cert
       moduleRef:
         id: cert
