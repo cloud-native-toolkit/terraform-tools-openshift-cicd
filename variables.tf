@@ -18,9 +18,16 @@ variable "operator_namespace" {
   description = "Namespace where operators will be installed"
 }
 
-variable "app_namespace" {
+variable "gitops_namespace" {
   type        = string
-  description = "Namespace where operators will be installed"
+  description = "Namespace where OpenShift GitOps will be installed"
+  default     = "openshift-gitops"
+}
+
+variable "tools_namespace" {
+  type        = string
+  description = "Namespace where tools will be installed"
+  default     = "tools"
 }
 
 variable "ingress_subdomain" {
