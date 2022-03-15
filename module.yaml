@@ -18,7 +18,18 @@ versions:
       refs:
         - source: github.com/ibm-garage-cloud/terraform-k8s-olm
           version: ">= 1.2.2"
-    - id: namespace
+    - id: gitops_namespace
+      discriminator: openshift-gitops
+      refs:
+        - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
+          version: ">= 2.1.0"
+    - id: tools_namespace
+      discriminator: tools
+      refs:
+        - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
+          version: ">= 2.1.0"
+    - id: sealed_secret_namespace
+      discriminator: sealed-secret
       refs:
         - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
           version: ">= 2.1.0"
@@ -47,12 +58,21 @@ versions:
       moduleRef:
         id: olm
         output: target_namespace
-    - name: app_namespace
+    - name: gitops_namespace
       moduleRef:
-        id: namespace
+        id: gitops_namespace
         output: name
-        discriminator: gitops
+      value: openshift-gitops
+    - name: tools_namespace
+      moduleRef:
+        id: tools_namespace
+        output: name
+      value: tools
     - name: sealed_secret_namespace
+      moduleRef:
+        id: sealed_secret_namespace
+        output: name
+      value: sealed-secrets
     - name: sealed_secret_cert
       moduleRef:
         id: cert
