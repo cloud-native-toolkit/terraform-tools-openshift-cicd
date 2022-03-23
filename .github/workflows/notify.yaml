@@ -10,7 +10,7 @@ jobs:
       matrix:
         repo:
           - cloud-native-toolkit/ibm-garage-iteration-zero
-          - cloud-native-toolkit/garage-terraform-modules
+          - cloud-native-toolkit/software-everywhere
 
     steps:
       - name: Repository dispatch ${{ matrix.repo }}

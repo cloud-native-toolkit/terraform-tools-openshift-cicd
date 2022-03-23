@@ -40,3 +40,7 @@ output "sealed_secrets_private_key" {
 output "sealed_secrets_cert" {
   value = module.sealed_secrets.cert
 }
+
+output "sealed_secrets_namespace" {
+  value = module.sealed_secrets.namespace
+}
