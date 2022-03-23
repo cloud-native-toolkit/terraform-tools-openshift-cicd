@@ -10,3 +10,12 @@ module "openshift_cicd" {
   sealed_secret_cert  = module.cert.cert
   sealed_secret_private_key = module.cert.private_key
 }
+
+resource local_file outputs {
+  filename = "${path.cwd}/.outputs"
+
+  content = jsonencode({
+    argocd_namespace = module.openshift_cicd.argocd_namespace
+    sealed_secrets_namespace = module.openshift_cicd.sealed_secrets_namespace
+  })
+}
