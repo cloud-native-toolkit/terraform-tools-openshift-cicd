@@ -17,12 +17,13 @@ fi
 export KUBECONFIG
 
 if ! kubectl get namespace "${ARGOCD_NAMESPACE}" 1> /dev/null 2> /dev/null; then
-  echo "Naemspace not found: ${ARGOCD_NAMESPACE}"
+  echo "Namespace not found: ${ARGOCD_NAMESPACE}"
+  kubectl get namespace
   exit 1
 fi
 
 if ! kubectl get namespace "${KUBESEAL_NAMESPACE}" 1> /dev/null 2> /dev/null; then
-  echo "Naemspace not found: ${KUBESEAL_NAMESPACE}"
+  echo "Namespace not found: ${KUBESEAL_NAMESPACE}"
   exit 1
 fi
 
