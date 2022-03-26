@@ -19,6 +19,8 @@ export KUBECONFIG
 if ! kubectl get namespace "${ARGOCD_NAMESPACE}" 1> /dev/null 2> /dev/null; then
   echo "Namespace not found: ${ARGOCD_NAMESPACE}"
   kubectl get namespace
+  echo "Grepping for namespace"
+  kubectl get namespace | grep "${ARGOCD_NAMESPACE}"
   exit 1
 fi
 
