@@ -5,7 +5,7 @@ module setup_clis {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
 
   bin_dir = "${path.cwd}/test_bin_dir"
-  clis = ["kubectl", "oc"]
+  clis = ["kubectl", "oc","jq"]
 }
 
 resource local_file bin_dir {
