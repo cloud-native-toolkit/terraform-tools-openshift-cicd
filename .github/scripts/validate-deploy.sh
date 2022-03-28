@@ -29,7 +29,7 @@ if ! kubectl get namespace "${KUBESEAL_NAMESPACE}" 1> /dev/null 2> /dev/null; th
   exit 1
 fi
 
-if [[ $(kubectl get argocd -n "${ARGOCD_NAMESPACE}" -o json | jq '.items | length') -lt 1)
+if [[ $(kubectl get argocd -n "${ARGOCD_NAMESPACE}" -o json | jq '.items | length') -lt 1 ]]; then
   echo "ArgoCD instance not found"
   exit 1
 fi
