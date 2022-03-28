@@ -6,8 +6,8 @@ BIN_DIR=$(cat .bin_dir)
 
 export PATH="${BIN_DIR}:${PATH}"
 
-ARGOCD_NAMESPACE=$(jq '.argocd_namespace' .outputs)
-KUBESEAL_NAMESPACE=$(jq '.sealed_secrets_namespace' .outputs)
+ARGOCD_NAMESPACE=$(jq -r '.argocd_namespace' .outputs)
+KUBESEAL_NAMESPACE=$(jq -r '.sealed_secrets_namespace' .outputs)
 
 if [[ -f .kubeconfig ]]; then
   KUBECONFIG=$(cat .kubeconfig)
