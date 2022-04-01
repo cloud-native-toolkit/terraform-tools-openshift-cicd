@@ -2,7 +2,7 @@
 
 NAMESPACES="$1"
 
-export PATH"${BIN_DIR}:${PATH}"
+export PATH="${BIN_DIR}:${PATH}"
 
 echo "${NAMESPACES}" | jq -r '.[]' | while read namespace; do
   if [[ $(kubectl get namespace -l created-by=openshift-cicd | grep -qc ${namespace}) -gt 0 ]]; then

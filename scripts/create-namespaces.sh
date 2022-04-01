@@ -2,7 +2,7 @@
 
 NAMESPACES="$1"
 
-export PATH"${BIN_DIR}:${PATH}"
+export PATH="${BIN_DIR}:${PATH}"
 
 echo "${NAMESPACES}" | jq -r '.[]' | while read namespace; do
   if ! kubectl get namespace "${namespace}" 1> /dev/null 2> /dev/null; then
