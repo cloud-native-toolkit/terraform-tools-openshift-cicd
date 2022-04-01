@@ -29,7 +29,7 @@ resource null_resource namespaces {
   }
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-namespaces.sh ${self.triggers.namespaces}"
+    command = "${path.module}/scripts/create-namespaces.sh '${self.triggers.namespaces}'"
 
     environment = {
       BIN_DIR = self.triggers.bin_dir
@@ -39,7 +39,7 @@ resource null_resource namespaces {
 
   provisioner "local-exec" {
     when = destroy
-    command = "${path.module}/scripts/delete-namespaces.sh ${self.triggers.namespaces}"
+    command = "${path.module}/scripts/delete-namespaces.sh '${self.triggers.namespaces}'"
 
     environment = {
       BIN_DIR = self.triggers.bin_dir

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-NAMESPACES="$1"
+NAMESPACES_JSON="$1"
 
 export PATH="${BIN_DIR}:${PATH}"
 
-echo "${NAMESPACES}" | jq -r '.[]' | while read namespace; do
+echo "${NAMESPACES_JSON}" | jq -r '.[]' | while read namespace; do
   if [[ $(kubectl get namespace -l created-by=openshift-cicd | grep -qc ${namespace}) -gt 0 ]]; then
     echo "Deleting namespace: ${namespace}"
 
