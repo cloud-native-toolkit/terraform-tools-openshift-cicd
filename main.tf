@@ -21,20 +21,36 @@ module "setup_clis" {
   clis = ["jq", "kubectl", "oc"]
 }
 
-resource null_resource tools_namespace {
+resource null_resource namespaces {
+  triggers {
+    namespaces = jsonencode(local.namespaces)
+    bin_dir = module.setup_clis.bin_dir
+    kubectl = var.cluster_config_file
+  }
+
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-namespaces.sh ${jsonencode(local.namespaces)}"
+    command = "${path.module}/scripts/create-namespaces.sh ${self.triggers.namespaces}"
 
     environment = {
-      BIN_DIR = module.setup_clis.bin_dir
-      KUBECTL = var.cluster_config_file
+      BIN_DIR = self.triggers.bin_dir
+      KUBECTL = self.triggers.kubectl
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-namespaces.sh ${self.triggers.namespaces}"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      KUBECTL = self.triggers.kubectl
     }
   }
 }
 
 module "pipelines" {
   source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.4.0"
-  depends_on = [null_resource.tools_namespace]
+  depends_on = [null_resource.namespaces]
 
   cluster_config_file_path = var.cluster_config_file
   cluster_ingress_hostname = var.ingress_subdomain
@@ -44,7 +60,7 @@ module "pipelines" {
 
 module "sealed_secrets" {
   source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.1.5"
-  depends_on = [null_resource.tools_namespace]
+  depends_on = [null_resource.namespaces]
 
   cluster_config_file = var.cluster_config_file
   private_key = var.sealed_secret_private_key
