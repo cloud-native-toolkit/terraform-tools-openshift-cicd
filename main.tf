@@ -1,3 +1,10 @@
+locals {
+  namespaces = [
+    var.tools_namespace,
+    sealed_secret_namespace
+  ]
+}
+
 
 module "gitops" {
   source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v2.18.1"
@@ -8,8 +15,26 @@ module "gitops" {
   app_namespace       = var.gitops_namespace
 }
 
+module "setup_clis" {
+  source = "cloud-native-toolkit/clis/util"
+
+  clis = ["jq", "kubectl", "oc"]
+}
+
+resource null_resource tools_namespace {
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-namespaces.sh ${jsonencode(local.namespaces)}"
+
+    environment = {
+      BIN_DIR = module.setup_clis.bin_dir
+      KUBECTL = var.cluster_config_file
+    }
+  }
+}
+
 module "pipelines" {
   source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.4.0"
+  depends_on = [null_resource.tools_namespace]
 
   cluster_config_file_path = var.cluster_config_file
   cluster_ingress_hostname = var.ingress_subdomain
@@ -19,6 +44,7 @@ module "pipelines" {
 
 module "sealed_secrets" {
   source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.1.5"
+  depends_on = [null_resource.tools_namespace]
 
   cluster_config_file = var.cluster_config_file
   private_key = var.sealed_secret_private_key
