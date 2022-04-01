@@ -1,7 +1,7 @@
 locals {
   namespaces = [
     var.tools_namespace,
-    sealed_secret_namespace
+    var.sealed_secret_namespace
   ]
 }
 
