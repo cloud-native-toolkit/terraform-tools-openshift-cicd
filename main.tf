@@ -25,7 +25,7 @@ resource null_resource namespaces {
   triggers = {
     namespaces = jsonencode(local.namespaces)
     bin_dir = module.setup_clis.bin_dir
-    kubectl = var.cluster_config_file
+    kubeconfig = var.cluster_config_file
   }
 
   provisioner "local-exec" {
@@ -33,7 +33,7 @@ resource null_resource namespaces {
 
     environment = {
       BIN_DIR = self.triggers.bin_dir
-      KUBECTL = self.triggers.kubectl
+      KUBECONFIG = self.triggers.kubeconfig
     }
   }
 
@@ -43,7 +43,7 @@ resource null_resource namespaces {
 
     environment = {
       BIN_DIR = self.triggers.bin_dir
-      KUBECTL = self.triggers.kubectl
+      KUBECONFIG = self.triggers.kubeconfig
     }
   }
 }
