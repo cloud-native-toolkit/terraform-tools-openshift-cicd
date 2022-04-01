@@ -22,7 +22,7 @@ module "setup_clis" {
 }
 
 resource null_resource namespaces {
-  triggers {
+  triggers = {
     namespaces = jsonencode(local.namespaces)
     bin_dir = module.setup_clis.bin_dir
     kubectl = var.cluster_config_file
