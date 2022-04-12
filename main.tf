@@ -7,7 +7,7 @@ locals {
 
 
 module "gitops" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v2.18.3"
+  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v2.18.6"
 
   cluster_config_file = var.cluster_config_file
   olm_namespace       = var.olm_namespace
