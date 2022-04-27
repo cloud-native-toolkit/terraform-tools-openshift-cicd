@@ -112,6 +112,131 @@ versions:
           id: sealed_secret_namespace
           output: name
         value: sealed-secrets
+    version: v1.7.19
+    outputs:
+      - name: argocd_namespace
+        description: The namespace where the ArgoCD instance has been provisioned
+      - name: argocd_service_account
+        description: The namespace where the ArgoCD instance has been provisioned
+      - name: argocd_host
+        description: The ingress host for the Argo CD instance
+        sensitive: true
+      - name: argocd_url
+        description: The ingress url for the Argo CD instance
+        sensitive: true
+      - name: argocd_username
+        description: The username of the default ArgoCD admin user
+      - name: argocd_password
+        description: The password of the default ArgoCD admin user
+        sensitive: true
+      - name: sealed_secrets_private_key
+        sensitive: true
+      - name: sealed_secrets_cert
+      - name: sealed_secrets_namespace
+  - platforms:
+      - kubernetes
+      - ocp4
+    dependencies:
+      - id: cluster
+        interface: github.com/cloud-native-toolkit/automation-modules#cluster
+        refs: []
+      - id: olm
+        refs:
+          - source: github.com/ibm-garage-cloud/terraform-k8s-olm
+            version: '>= 1.2.2'
+      - id: gitops_namespace
+        discriminator: openshift-gitops
+        refs:
+          - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
+            version: '>= 2.1.0'
+      - id: tools_namespace
+        discriminator: tools
+        refs:
+          - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
+            version: '>= 2.1.0'
+      - id: sealed_secret_namespace
+        discriminator: sealed-secret
+        refs:
+          - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
+            version: '>= 2.1.0'
+      - id: cert
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-util-sealed-secret-cert
+            version: '>= 0.0.0'
+    variables:
+      - name: cluster_config_file
+        type: string
+        description: Cluster config file for Kubernetes cluster.
+        moduleRef:
+          id: cluster
+          output: config_file_path
+      - name: cluster_type
+        type: string
+        description: The type of cluster (openshift or kubernetes)
+        moduleRef:
+          id: cluster
+          output: platform.type_code
+      - name: olm_namespace
+        type: string
+        description: Namespace where olm is installed
+        moduleRef:
+          id: olm
+          output: olm_namespace
+      - name: operator_namespace
+        type: string
+        description: Namespace where operators will be installed
+        moduleRef:
+          id: olm
+          output: target_namespace
+      - name: gitops_namespace
+        type: string
+        description: Namespace where OpenShift GitOps will be installed
+        default: openshift-gitops
+        moduleRef:
+          id: gitops_namespace
+          output: name
+        value: openshift-gitops
+      - name: tools_namespace
+        type: string
+        description: Namespace where tools will be installed
+        default: tools
+        moduleRef:
+          id: tools_namespace
+          output: name
+        value: tools
+      - name: ingress_subdomain
+        type: string
+        description: The subdomain for ingresses in the cluster
+        default: ''
+        moduleRef:
+          id: cluster
+          output: platform.ingress
+      - name: sealed_secret_cert
+        type: string
+        description: >-
+          The certificate that will be used to encrypt sealed secrets. If not
+          provided, a new one will be generated
+        default: ''
+        moduleRef:
+          id: cert
+          output: cert
+      - name: sealed_secret_private_key
+        type: string
+        description: >-
+          The private key that will be used to decrypt sealed secrets. If not
+          provided, a new one will be generated
+        default: ''
+        moduleRef:
+          id: cert
+          output: private_key
+      - name: sealed_secret_namespace
+        type: string
+        description: The namespace where the sealed secret will be deployed
+        default: sealed-secrets
+        moduleRef:
+          id: sealed_secret_namespace
+          output: name
+        value: sealed-secrets
     version: v1.7.18
     outputs:
       - name: argocd_namespace
