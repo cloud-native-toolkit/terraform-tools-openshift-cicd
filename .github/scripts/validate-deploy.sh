@@ -16,6 +16,8 @@ else
 fi
 export KUBECONFIG
 
+source "${SCRIPT_DIR}/validation-functions.sh"
+
 if ! kubectl get namespace "${ARGOCD_NAMESPACE}" 1> /dev/null 2> /dev/null; then
   echo "Namespace not found: ${ARGOCD_NAMESPACE}"
   kubectl get namespace
@@ -24,14 +26,8 @@ if ! kubectl get namespace "${ARGOCD_NAMESPACE}" 1> /dev/null 2> /dev/null; then
   exit 1
 fi
 
-if ! kubectl get namespace "${KUBESEAL_NAMESPACE}" 1> /dev/null 2> /dev/null; then
-  echo "Namespace not found: ${KUBESEAL_NAMESPACE}"
-  exit 1
-fi
+check_k8s_namespace "${ARGOCD_NAMESPACE}"
+check_k8s_namespace "${KUBESEAL_NAMESPACE}"
 
-if [[ $(kubectl get argocd -n "${ARGOCD_NAMESPACE}" -o json | jq '.items | length') -lt 1 ]]; then
-  echo "ArgoCD instance not found"
-  exit 1
-fi
-
-kubectl get all -n "${KUBESEAL_NAMESPACE}"
+check_k8s_resource openshift-operators subscription openshift-gitops-operator
+check_k8s_resource openshift-operators subscription openshift-pipelines-operator-rh

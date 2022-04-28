@@ -7,7 +7,7 @@ locals {
 
 
 module "gitops" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v2.18.10"
+  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v2.18.12"
 
   cluster_config_file = var.cluster_config_file
   olm_namespace       = var.olm_namespace
@@ -49,7 +49,7 @@ resource null_resource namespaces {
 }
 
 module "pipelines" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.4.0"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.4.1"
   depends_on = [null_resource.namespaces]
 
   cluster_config_file_path = var.cluster_config_file
@@ -59,7 +59,7 @@ module "pipelines" {
 }
 
 module "sealed_secrets" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.1.6"
+  source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.1.7"
   depends_on = [null_resource.namespaces]
 
   cluster_config_file = var.cluster_config_file
