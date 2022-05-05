@@ -23,11 +23,6 @@ versions:
       refs:
         - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
           version: ">= 2.1.0"
-    - id: tools_namespace
-      discriminator: tools
-      refs:
-        - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
-          version: ">= 2.1.0"
     - id: sealed_secret_namespace
       discriminator: sealed-secret
       refs:
@@ -63,11 +58,6 @@ versions:
         id: gitops_namespace
         output: name
       value: openshift-gitops
-    - name: tools_namespace
-      moduleRef:
-        id: tools_namespace
-        output: name
-      value: tools
     - name: sealed_secret_namespace
       moduleRef:
         id: sealed_secret_namespace

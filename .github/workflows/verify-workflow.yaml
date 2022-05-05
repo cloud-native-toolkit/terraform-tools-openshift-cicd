@@ -6,6 +6,14 @@ on:
     secrets:
       IBMCLOUD_API_KEY:
         required: true
+      AWS_CLUSTER_USERNAME:
+        required: true
+      AWS_CLUSTER_PASSWORD:
+        required: true
+      AZURE_CLUSTER_USERNAME:
+        required: true
+      AZURE_CLUSTER_PASSWORD:
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -16,9 +24,12 @@ jobs:
     strategy:
       matrix:
         testcase:
-          - ocp4_latest
+          - ibm_ocp48
+          - ibm_ocp49
+          - ibm_ocp410
+#          - azure_latest_gitops
+          - aws_latest_gitops
       fail-fast: false
-      max-parallel: 1
 
     env:
       HOME: /home/devops
@@ -28,6 +39,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
+      - id: variables
+        name: Set up variables
+        env:
+          AWS_CLUSTER_USERNAME: ${{ secrets.AWS_CLUSTER_USERNAME }}
+          AWS_CLUSTER_PASSWORD: ${{ secrets.AWS_CLUSTER_PASSWORD }}
+          AZURE_CLUSTER_USERNAME: ${{ secrets.AZURE_CLUSTER_USERNAME }}
+          AZURE_CLUSTER_PASSWORD: ${{ secrets.AZURE_CLUSTER_PASSWORD }}
+          IBM_CLUSTER_USERNAME: "apikey"
+          IBM_CLUSTER_PASSWORD: ${{ secrets.IBMCLOUD_API_KEY }}
+          ENVIRONMENT: ${{ matrix.testcase }}
+        shell: bash
+        run: |
+          if [[ $ENVIRONMENT =~ ^aws ]]; then
+            echo "::set-output name=CLUSTER_USERNAME::$AWS_CLUSTER_USERNAME"
+            echo "::set-output name=CLUSTER_PASSWORD::$AWS_CLUSTER_PASSWORD"
+          elif [[ $ENVIRONMENT =~ ^azure ]]; then
+            echo "::set-output name=CLUSTER_USERNAME::$AZURE_CLUSTER_USERNAME"
+            echo "::set-output name=CLUSTER_PASSWORD::$AZURE_CLUSTER_PASSWORD"
+          else 
+            echo "::set-output name=CLUSTER_USERNAME::$IBM_CLUSTER_USERNAME"
+            echo "::set-output name=CLUSTER_PASSWORD::$IBM_CLUSTER_PASSWORD"
+          fi
+
       - name: Verify deploy on ${{ matrix.testcase }}
         uses: cloud-native-toolkit/action-module-verify-deploy@main
         with:
@@ -35,6 +69,8 @@ jobs:
           validateDeployScript: .github/scripts/validate-deploy.sh
         env:
           TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
+          TF_VAR_cluster_username: ${{ steps.variables.outputs.CLUSTER_USERNAME }}
+          TF_VAR_cluster_password: ${{ steps.variables.outputs.CLUSTER_PASSWORD }}
           IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
 
       - name: Verify destroy on ${{ matrix.testcase }}
@@ -44,4 +80,6 @@ jobs:
           clusterId: ${{ matrix.testcase }}
         env:
           TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
+          TF_VAR_cluster_username: ${{ steps.variables.outputs.CLUSTER_USERNAME }}
+          TF_VAR_cluster_password: ${{ steps.variables.outputs.CLUSTER_PASSWORD }}
           IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}

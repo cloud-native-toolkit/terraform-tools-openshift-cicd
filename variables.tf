@@ -24,12 +24,6 @@ variable "gitops_namespace" {
   default     = "openshift-gitops"
 }
 
-variable "tools_namespace" {
-  type        = string
-  description = "Namespace where tools will be installed"
-  default     = "tools"
-}
-
 variable "ingress_subdomain" {
   type        = string
   description = "The subdomain for ingresses in the cluster"

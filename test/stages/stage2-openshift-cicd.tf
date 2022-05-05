@@ -6,7 +6,6 @@ module "openshift_cicd" {
   cluster_config_file = module.dev_cluster.config_file_path
   olm_namespace       = module.dev_software_olm.olm_namespace
   operator_namespace  = module.dev_software_olm.target_namespace
-  tools_namespace     = module.dev_tools_namespace.name
   sealed_secret_cert  = module.cert.cert
   sealed_secret_private_key = module.cert.private_key
 }
