@@ -3,11 +3,10 @@ name: Verify
 # Controls when the action will run.
 on:
   workflow_call:
-    inputs:
-      NOTIFY:
-        required: false
-        default: false
-        type: boolean
+    outputs:
+      status:
+        description: The status of the job
+        value: ${{ jobs.verify.outputs.status }}
     secrets:
       IBMCLOUD_API_KEY:
         required: true
@@ -40,6 +39,9 @@ jobs:
 
     env:
       HOME: /home/devops
+
+    outputs:
+      status: ${{ job.status }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -90,12 +92,3 @@ jobs:
           TF_VAR_cluster_username: ${{ steps.variables.outputs.CLUSTER_USERNAME }}
           TF_VAR_cluster_password: ${{ steps.variables.outputs.CLUSTER_PASSWORD }}
           IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
-
-      - name: Notify discord
-        uses: th0th/notify-discord@v0.4.1
-        if: always() && github.event.inputs.NOTIFY
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_AUTOMATION_HOOK_URL }}
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_JOB_NAME: "Verify"
-          GITHUB_JOB_STATUS: ${{ job.status }}

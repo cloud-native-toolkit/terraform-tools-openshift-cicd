@@ -11,8 +11,6 @@ on:
 jobs:
   verify:
     uses: ./.github/workflows/verify-workflow.yaml
-    with:
-      NOTIFY: true
     secrets:
       IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
       AWS_CLUSTER_USERNAME: ${{ secrets.AWS_CLUSTER_USERNAME }}
@@ -20,3 +18,16 @@ jobs:
       AZURE_CLUSTER_USERNAME: ${{ secrets.AZURE_CLUSTER_USERNAME }}
       AZURE_CLUSTER_PASSWORD: ${{ secrets.AZURE_CLUSTER_PASSWORD }}
       DISCORD_AUTOMATION_HOOK_URL: ${{ secrets.DISCORD_AUTOMATION_HOOK_URL }}
+
+  notify:
+    needs: [verify]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify discord
+        uses: th0th/notify-discord@v0.4.1
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_AUTOMATION_HOOK_URL }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_JOB_NAME: "Verify"
+          GITHUB_JOB_STATUS: ${{ needs.verify.outputs.status }}
