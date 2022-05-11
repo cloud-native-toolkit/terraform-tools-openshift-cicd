@@ -44,3 +44,7 @@ output "sealed_secrets_cert" {
 output "sealed_secrets_namespace" {
   value = module.sealed_secrets.namespace
 }
+
+output "tekton_namespace" {
+  value = module.pipelines.namespace
+}

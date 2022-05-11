@@ -1,6 +1,8 @@
 name: openshift-cicd
 type: terraform
 description: Module to provision Tekton and ArgoCD into an OpenShift cluster together
+interfaces:
+  - github.com/cloud-native-toolkit/automation-modules#tekton
 tags:
     - tools
     - devops

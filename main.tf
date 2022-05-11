@@ -48,7 +48,7 @@ resource null_resource namespaces {
 }
 
 module "pipelines" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.5.1"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.5.2"
   depends_on = [null_resource.namespaces]
 
   cluster_config_file_path = var.cluster_config_file
