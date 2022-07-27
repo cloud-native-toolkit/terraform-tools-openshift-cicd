@@ -34,7 +34,7 @@ jobs:
           - ibm_ocp49
           - ibm_ocp410
 #          - azure_latest_gitops
-          - aws_latest_gitops
+#          - aws_latest_gitops
       fail-fast: false
 
     env:
