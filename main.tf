@@ -6,7 +6,7 @@ locals {
 
 
 module "gitops" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v2.19.3"
+  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v2.20.0"
 
   cluster_config_file = var.cluster_config_file
   olm_namespace       = var.olm_namespace
@@ -48,7 +48,7 @@ resource null_resource namespaces {
 }
 
 module "pipelines" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.5.4"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.5.5"
   depends_on = [null_resource.namespaces]
 
   cluster_config_file_path = var.cluster_config_file
