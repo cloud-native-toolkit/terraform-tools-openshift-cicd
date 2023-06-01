@@ -14,7 +14,6 @@ module "gitops" {
   app_namespace       = var.gitops_namespace
 }
 
-
 data clis_check clis {
   clis = ["jq", "kubectl", "oc"]
 }
