@@ -57,7 +57,7 @@ module "pipelines" {
 }
 
 module "sealed_secrets" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.2.0"
+  source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.2.1"
   depends_on = [null_resource.namespaces]
 
   cluster_config_file = var.cluster_config_file
