@@ -14,16 +14,15 @@ module "gitops" {
   app_namespace       = var.gitops_namespace
 }
 
-module "setup_clis" {
-  source = "cloud-native-toolkit/clis/util"
 
+data clis_check clis {
   clis = ["jq", "kubectl", "oc"]
 }
 
 resource null_resource namespaces {
   triggers = {
     namespaces = jsonencode(local.namespaces)
-    bin_dir = module.setup_clis.bin_dir
+    bin_dir = data.clis_check.clis.bin_dir
     kubeconfig = var.cluster_config_file
   }
 
@@ -48,16 +47,18 @@ resource null_resource namespaces {
 }
 
 module "pipelines" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v2.5.4"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v3.0.0"
   depends_on = [null_resource.namespaces]
 
   cluster_config_file_path = var.cluster_config_file
   cluster_ingress_hostname = var.ingress_subdomain
+  olm_namespace            = var.olm_namespace
+  operator_namespace       = var.operator_namespace
   provision                = module.gitops.provision_tekton
 }
 
 module "sealed_secrets" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.2.0"
+  source = "github.com/cloud-native-toolkit/terraform-tools-sealed-secrets.git?ref=v1.2.1"
   depends_on = [null_resource.namespaces]
 
   cluster_config_file = var.cluster_config_file
