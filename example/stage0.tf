@@ -1,6 +1,6 @@
 
 data clis_check test_clis {
-  clis = ["kubectl", "oc", "argocd"]
+  clis = ["kubectl", "oc", "argocd", "helm"]
 }
 
 resource local_file bin_dir {
