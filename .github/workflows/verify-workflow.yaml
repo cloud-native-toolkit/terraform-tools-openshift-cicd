@@ -29,6 +29,13 @@ jobs:
         with:
           terraform_version: 1.2.9
 
+      - name: Install CLI tools from OpenShift Mirror
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          source: "mirror"
+          oc: "4"
+          helm: "latest"
+
       - name: Verify deploy on ${{ matrix.testcase }}
         uses: cloud-native-toolkit/action-module-verify-deploy@v2
         with:
