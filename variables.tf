@@ -21,12 +21,18 @@ variable "operator_namespace" {
 variable "gitops_namespace" {
   type        = string
   description = "Namespace where OpenShift GitOps will be installed"
-  default     = "openshift-gitops"
+  default     = ""
 }
 
 variable "ingress_subdomain" {
   type        = string
   description = "The subdomain for ingresses in the cluster"
+  default     = ""
+}
+
+variable "tls_secret_name" {
+  type        = string
+  description = "The name of the secret that contains the ingress tls info"
   default     = ""
 }
 
