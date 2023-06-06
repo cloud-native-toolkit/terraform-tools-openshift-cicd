@@ -6,7 +6,6 @@ If the OpenShift GitOps operator has been deployed (OpenShift 4.6+) then Tekton 
 
 The presence of the Tekton operator does not preclude the use of other CI tools within the OpenShift cluster.
 
-
 ## Software dependencies
 
 The module depends on the following software components:
