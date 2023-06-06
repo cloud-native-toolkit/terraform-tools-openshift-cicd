@@ -6,7 +6,7 @@ locals {
 
 
 module "gitops" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v3.0.3"
+  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v3.1.0"
 
   cluster_config_file = var.cluster_config_file
   olm_namespace       = var.olm_namespace
@@ -46,13 +46,13 @@ resource null_resource namespaces {
 }
 
 module "pipelines" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v3.0.1"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton.git?ref=v3.1.0"
   depends_on = [null_resource.namespaces]
 
   cluster_config_file_path = var.cluster_config_file
   cluster_ingress_hostname = var.ingress_subdomain
   olm_namespace            = var.olm_namespace
-  operator_namespace       = var.operator_namespace
+  operator_namespace       = module.gitops.operator_namespace
   provision                = module.gitops.provision_tekton
 }
 

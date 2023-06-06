@@ -8,6 +8,8 @@ export PATH="${BIN_DIR}:${PATH}"
 
 ARGOCD_NAMESPACE=$(jq -r '.argocd_namespace' .outputs)
 KUBESEAL_NAMESPACE=$(jq -r '.sealed_secrets_namespace' .outputs)
+OPERATOR_NAMESPACE=$(jq -r '.operator_namespace' .outputs)
+OPERATOR_NAMES=$(jq -c '.operator_names' .outputs)
 
 if [[ -f .kubeconfig ]]; then
   KUBECONFIG=$(cat .kubeconfig)
@@ -28,6 +30,8 @@ fi
 
 check_k8s_namespace "${ARGOCD_NAMESPACE}"
 check_k8s_namespace "${KUBESEAL_NAMESPACE}"
+check_k8s_namespace "${OPERATOR_NAMESPACE}"
 
-check_k8s_resource openshift-operators subscription openshift-gitops-operator
-check_k8s_resource openshift-operators subscription openshift-pipelines-operator-rh
+echo "${OPERATOR_NAMES}" | jq -r '.[]' | while read name; do
+  check_k8s_resource "${OPERATOR_NAMESPACE}" subscription "${name}"
+done

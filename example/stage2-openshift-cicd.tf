@@ -14,7 +14,9 @@ resource local_file outputs {
   filename = "${path.cwd}/.outputs"
 
   content = jsonencode({
-    argocd_namespace = module.openshift_cicd.argocd_namespace
+    operator_namespace       = module.openshift_cicd.operator_namespace
+    operator_names           = module.openshift_cicd.operator_names
+    argocd_namespace         = module.openshift_cicd.argocd_namespace
     sealed_secrets_namespace = module.openshift_cicd.sealed_secrets_namespace
   })
 }
