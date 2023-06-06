@@ -9,6 +9,9 @@ module "gitops" {
   source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git?ref=v3.1.0"
 
   cluster_config_file = var.cluster_config_file
+  cluster_type        = var.cluster_type
+  ingress_subdomain   = var.ingress_subdomain
+  tls_secret_name     = var.tls_secret_name
   olm_namespace       = var.olm_namespace
   operator_namespace  = var.operator_namespace
   app_namespace       = var.gitops_namespace

@@ -30,6 +30,12 @@ variable "ingress_subdomain" {
   default     = ""
 }
 
+variable "tls_secret_name" {
+  type        = string
+  description = "The name of the secret that contains the ingress tls info"
+  default     = ""
+}
+
 variable "sealed_secret_cert" {
   type        = string
   description = "The certificate that will be used to encrypt sealed secrets. If not provided, a new one will be generated"
